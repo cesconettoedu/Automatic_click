@@ -1,53 +1,64 @@
-run -> python3 main.py
-
 # VPN Loop Automator
 
-Este script automatiza ciclos de conexão VPN e testes de navegação com Firefox (via Selenium).  
-Ele conecta a VPN, abre um site de teste, espera alguns segundos, fecha o navegador, desconecta a VPN e repete o processo várias vezes.
+This script automates VPN connection cycles and website testing with Firefox (via Selenium).  
+It connects to the VPN, opens a test website, waits a few seconds, closes the browser, disconnects from the VPN, and repeats the process multiple times.
 
 ---
 
-## Como funciona
+## How it works
 
-1. Verifica o IP público atual.
-2. Conecta a VPN usando **OpenVPN** com o arquivo de configuração especificado (`client.ovpn`).
-3. Aguarda alguns segundos para a VPN estabelecer a conexão.
-4. Obtém o novo IP público e compara com o anterior.
-5. Abre o **Firefox em modo headless** via Selenium.
-6. Acessa a URL definida (`https://www.siteescolhido.com`).
-7. Espera alguns segundos no site.
-8. Fecha o navegador.
-9. Desconecta da VPN (encerra processos `openvpn`).
-10. Espera o tempo configurado.
-11. Repete o ciclo até atingir o número definido (`NUM_CICLOS`).
+1. Checks the current public IP.
+2. Connects to the VPN using **OpenVPN** with the specified configuration file (`client.ovpn`).
+3. Waits a few seconds for the VPN to establish the connection.
+4. Retrieves the new public IP and compares it with the previous one.
+5. Launches **Firefox in headless mode** via Selenium.
+6. Opens the specified URL (`https://www.siteescolhido.com`).
+7. Waits a few seconds on the website.
+8. Closes the browser.
+9. Disconnects from the VPN (kills `openvpn` processes).
+10. Waits for the configured delay.
+11. Repeats the cycle until the defined number (`NUM_CICLOS`) is reached.
 
 ---
 
-## Requisitos
+## Requirements
 
-- **Linux** com suporte a `sudo` e `openvpn` instalado
+- **Linux** with `sudo` support and `openvpn` installed
 - **Python 3.8+**
-- **Bibliotecas Python**:
+- **Python libraries**:
   - `requests`
   - `selenium`
-- **Firefox** instalado
-- **geckodriver** compatível com a versão do Firefox e presente no `PATH`
+- **Firefox** installed
+- **geckodriver** compatible with your Firefox version and available in the `PATH`
 
 ---
 
-## Configuração
+## Configuration
 
-- Defina os parâmetros no código:
-  - `VPN_CONFIG` → caminho do arquivo `.ovpn`
-  - `URL_TESTE` → URL para abrir no navegador
-  - `NUM_CICLOS` → número de ciclos que serão executados
-  - `TEMPO_ESPERA` → tempo de espera entre ciclos (segundos)
-  - `TEMPO_CONEXAO_VPN` → tempo de espera para VPN conectar (segundos)
+Set the following parameters inside the script:
+
+- `VPN_CONFIG` → path to the `.ovpn` configuration file
+- `URL_TESTE` → URL to open in the browser
+- `NUM_CICLOS` → number of cycles to execute
+- `TEMPO_ESPERA` → waiting time between cycles (seconds)
+- `TEMPO_CONEXAO_VPN` → waiting time for VPN to connect (seconds)
 
 ---
 
-## Execução
+## Execution
 
 ```bash
 python3 main.py
+
+
+Example output:
+[2025-08-28 10:00:00] === Starting VPN Loop Automator ===
+[2025-08-28 10:00:00] Connecting to VPN via openvpn...
+[2025-08-28 10:00:10] ✓ VPN connected
+[2025-08-28 10:00:10] Initializing Firefox (headless)...
+[2025-08-28 10:00:15] ✓ Page loaded: Free Online Image Resizer Tool
+[2025-08-28 10:00:20] ✓ Firefox closed
+[2025-08-28 10:00:20] Disconnecting VPN...
+[2025-08-28 10:00:20] ✓ OpenVPN processes terminated
+
 ```
